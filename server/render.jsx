@@ -10,15 +10,9 @@ import React from "react";
 import { renderToPipeableStream } from "react-dom/server";
 import Html from './Html';
 import App from "../app/App";
-import { DataProvider } from "../data/DataProvider";
-import { comments } from '../data/comments';
+import { CommentProvider } from "../data/CommentProvider";
+import { fetchComments } from '../data/fetch-comments';
 import { ABORT_DELAY } from "./delays";
-
-// In a real setup, you'd read it from webpack build stats.
-let assets = {
-  "main.js": "/main.js",
-  "main.css": "/main.css"
-};
 
 export default function render(url, res) {
   // This is how you would wire it up previously:
@@ -27,7 +21,7 @@ export default function render(url, res) {
   //   '<!DOCTYPE html>' +
   //   renderToString(
   //     <DataProvider data={data}>
-  //       <App assets={assets} />
+  //       <App />
   //     </DataProvider>,
   //   )
   // );
@@ -40,14 +34,14 @@ export default function render(url, res) {
 
   // data for server
   // also gets serialized in HTML for client to read
-  const data = comments();
+  const comments = fetchComments();
 
   const stream = renderToPipeableStream(
-    <DataProvider data={data}>
-      <Html assets={assets} title="Hello">
-        <App assets={assets} />
+    <CommentProvider data={comments}>
+      <Html title="Hello">
+        <App />
       </Html>
-    </DataProvider>,
+    </CommentProvider>,
     {
       onShellReady() {
         // If something errored before we started streaming, we set the error code appropriately.

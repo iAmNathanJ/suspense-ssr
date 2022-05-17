@@ -13,9 +13,13 @@ import Spinner from './Spinner';
 import Layout from './Layout';
 import NavBar from './NavBar';
 
-const Comments = lazy(() => import('./Comments' /* webpackPrefetch: true */));
-const Sidebar = lazy(() => import('./Sidebar' /* webpackPrefetch: true */));
-const Post = lazy(() => import('./Post' /* webpackPrefetch: true */));
+const Comments = lazy(() => import('./Comments'));
+const Sidebar = lazy(() => import('./Sidebar'));
+const Post = lazy(async () => {
+  // slow import triggers suspense
+  await new Promise(res => setTimeout(res, 2000));
+  return import('./Post')
+});
 
 export default function App() {
   return (

@@ -1,7 +1,7 @@
 import { API_DELAY } from "../server/delays";
 
 // any promise that resolves with data can be used
-export async function comments() {
+export async function fetchComments() {
   // Simulate a delay caused by data fetching.
   await new Promise((res) => setTimeout(res, API_DELAY))
 

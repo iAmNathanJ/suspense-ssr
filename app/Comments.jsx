@@ -7,12 +7,12 @@
  */
 
 import React from 'react';
-import {useData} from '../data/DataProvider';
+import {useComments} from '../data/CommentProvider';
 
 export default function Comments() {
   console.log('rendering comments');
 
-  const { data: comments } = useData();
+  const { comments } = useComments();
 
   return (
     <>

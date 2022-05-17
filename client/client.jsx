@@ -8,14 +8,14 @@
 
 import React from 'react';
 import { hydrateRoot } from "react-dom/client";
-import { DataProvider } from '../data/DataProvider';
+import { CommentProvider } from '../data/CommentProvider';
 import App from "../app/App";
 
 const root = document.getElementById('app');
 
 hydrateRoot(
   root,
-  <DataProvider fallback={[]}>
-    <App assets={window.assetManifest} />
-  </DataProvider>
+  <CommentProvider fallback={['yikes, this is fallback data']}>
+    <App />
+  </CommentProvider>
 );

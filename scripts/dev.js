@@ -10,8 +10,11 @@ const { watch } = require('chokidar');
 
   nodemon({
     script: 'build/server.js',
+    nodeArgs: '--inspect',
     watch: 'build/server.js',
-  }).on("log", nodemonOutput);
+  })
+    .on("log", nodemonOutput)
+    .on("quit", console.log);
 
   watch([
     './client/**',

@@ -1,3 +1,27 @@
+import { useId } from "react";
+
+export function useSuspendableData({data, fallback}) {
+  const id = useId();
+
+  let payload;
+
+  if (isServer()) {
+    payload = data;
+  } else {
+    try {
+      const cached = document.querySelector(`[data-hydration="${id}"]`);
+      payload = JSON.parse(cached.textContent);
+    } catch {
+      console.log(`data didn't make it in time on the server. need to fetch client side.`);
+
+      // this will break hydration
+      payload = fallback;
+    }
+  }
+
+  return {id, data: suspendable(payload)};
+}
+
 export function suspendable(asyncOrSyncThing) {
   const dataPromise = deferred();
 
@@ -41,4 +65,8 @@ function deferred() {
   Object.defineProperty(promise, "value", { get: () => value });
 
   return Object.assign(promise, deferredProps);
+}
+
+function isServer() {
+  return typeof window === 'undefined'
 }
